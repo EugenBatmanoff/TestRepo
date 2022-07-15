@@ -3,8 +3,18 @@ plugins {
     id 'java'
   /* id 'org.springframework.boot' version '2.5.2'*/
 }
-//hello git
-//one more row
+
+/*project("admin"){
+    apply plugin: 'java'
+    task('hello').dolast {
+        println "I'm $project.name"
+    }
+}*/
+/*jar {
+    manifest {
+        attributes 'Main-Class': 'com.builders.admin.AdminEntryPoint'
+    }
+}*/
 subprojects{
     apply plugin: 'java'
    // id 'org.springframework.boot' version '2.5.2'
@@ -12,7 +22,7 @@ subprojects{
 allprojects {
     group 'com.batmanoff'
     version '1.0'
-
+    java.sourceCompatibility(JavaVersion.VERSION_11)
 
     configurations {
         compileOnly.extendsFrom annotationProcessor
