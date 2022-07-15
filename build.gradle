@@ -1,0 +1,100 @@
+
+plugins {
+    id 'java'
+  /* id 'org.springframework.boot' version '2.5.2'*/
+}
+
+/*project("admin"){
+    apply plugin: 'java'
+    task('hello').dolast {
+        println "I'm $project.name"
+    }
+}*/
+/*jar {
+    manifest {
+        attributes 'Main-Class': 'com.builders.admin.AdminEntryPoint'
+    }
+}*/
+subprojects{
+    apply plugin: 'java'
+   // id 'org.springframework.boot' version '2.5.2'
+}
+allprojects {
+    group 'com.batmanoff'
+    version '1.0'
+    java.sourceCompatibility(JavaVersion.VERSION_11)
+
+    configurations {
+        compileOnly.extendsFrom annotationProcessor
+    }
+    dependencies {
+        testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+        compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    }
+    test {
+        useJUnitPlatform()
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+    repositories {
+        mavenLocal() // будет пытаться найти зависимости в руте Maven: .m2\repository
+        mavenCentral()
+        maven{
+            url =uri('https://repo.maven.apache.org/maven2/')
+        }
+        flatDir {
+            dir 'libs'
+        }
+    }
+
+}
+
+//Java version
+//java.toolchain.languageVersion = JavaLanguageVersion.of(11);
+java.sourceCompatibility = JavaVersion.VERSION_11;
+
+//Repositories
+
+
+//Encoding
+tasks.withType(JavaCompile){
+    options.encoding = 'UTF-8'
+}
+
+// Variables
+def springBootVersion = '2.5.2'
+def nameProperty = 'Viewer'
+/*
+ext {
+    springBootVersion = '2.5.2' // старый вариант
+}*/
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    //и второй способ
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.5.2'
+    annotationProcessor "org.projectlombok:lombok:1.18.16"
+}
+
+configurations {
+    compileOnly.extendsFrom annotationProcessor
+    testCompileOnly.extendsFrom annotationProcessor
+    testAnnotationProcessor.extendsFrom annotationProcessor
+/*    implementation gradleApi()*/
+}
+
+
+
+task greetingTask (type: GreetingTask){
+    group "custom group"
+    greetingName "Viewer"
+}
+
+task helloViewer {
+    dependsOn check
+    doFirst{
+        println 'Hello,' + nameProperty + '!'
+    }
+    test.enabled =false
+}
